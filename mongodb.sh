@@ -38,7 +38,7 @@ VALIDATE $? "Installing MongoDB"
 systemctl start mongod  &>>$LOG_FILE
 VALIDATE $? "Starting MonogoDB"
 
-sed -i '/127.0.0.1/ 0.0.0.0/g' /etc/mongod.conf  &>>$LOG_FILE
+sed -i 's/127.0.0.1/ 0.0.0.0/g' /etc/mongod.conf  &>>$LOG_FILE
 VALIDATE $? "Allowing the Ports"
 
 systemctl restart mongod  &>>$LOG_FILE
