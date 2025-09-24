@@ -21,28 +21,29 @@ fi
 
 VALIDATE(){
     if [ $? -ne 0 ]; then 
-        echo -e "$1..... $R FAILED $N" &>> LOG_FILE
+        echo -e "$1..... $R FAILED $N"  | tee -a $LOG_FILE
+        exit 1
     else
-        echo -e "$2..... $G SUCCESS $N" &>> LOG_FILE
+        echo -e "$2..... $G SUCCESS $N" | tee -a $LOG_FILE
     fi 
 }
 
 
-cp mongo.repo /etc/yum.repos.d/mongo.repo
+cp mongo.repo /etc/yum.repos.d/mongo.repo  &>>$LOG_FILE
 VALIDATE $? "Setting up the Mongod file"
 
 
-dnf install mongodb-org -y 
-VALIDATE $? "Installing MonogoDB"
+cp mongo.repo /etc/yum.repos.d/mongo.repo
+VALIDATE $? "Adding Mongo repo"
 
-systemctl enable mongod 
-VALIDATE $? "Enabling MonogoDB"
+dnf install mongodb-org -y &>>$LOG_FILE
+VALIDATE $? "Installing MongoDB"
 
-systemctl start mongod 
+systemctl start mongod  &>>$LOG_FILE
 VALIDATE $? "Starting MonogoDB"
 
-sed -i '/127.0.0.1/ 0.0.0.0/g' /etc/mongod.conf
+sed -i '/127.0.0.1/ 0.0.0.0/g' /etc/mongod.conf  &>>$LOG_FILE
 VALIDATE $? "Allowing the Ports"
 
-systemctl restart mongod
+systemctl restart mongod  &>>$LOG_FILE
 VALIDATE $? "Restarting the MongoDB"
