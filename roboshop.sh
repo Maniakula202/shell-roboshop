@@ -2,6 +2,7 @@
 
 IMAGE_ID="ami-09c813fb71547fc4f"
 SG="sg-0d7d38fd2dd9739a0"
+ZONE_ID="Z04762511YRI8TCYP5ZSP"
 
 for instance in $@
 do 
