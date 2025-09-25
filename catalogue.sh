@@ -30,51 +30,53 @@ VALIDATE(){
     fi 
 }
 
-dnf module disable nodejs -y
+dnf module disable nodejs -y &>>$LOG_FILE
 VALIDATE $? "Disabling nodejs"
 
-dnf module enable nodejs:20 -y
+dnf module enable nodejs:20 -y &>>$LOG_FILE
 VALIDATE $? "Enabling nodejs:20"
 
-dnf install nodejs -y
+dnf install nodejs -y &>>$LOG_FILE
 VALIDATE $? "Installing nodejs"
 
-useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop
+useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>>$LOG_FILE
 VALIDATE $? "Creating root user"
 
-mkdir -p /app 
+mkdir -p /app  &>>$LOG_FILE
 VALIDATE $? "Creating app directory"
 
-curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip 
+curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip  &>>$LOG_FILE
 VALIDATE $? "Download code to the temp file"
 
 cd /app 
 
-unzip /tmp/catalogue.zip
+unzip /tmp/catalogue.zip &>>$LOG_FILE
 VALIDATE $? "Unzinpping the code"
 
-npm install 
+npm install  &>>$LOG_FILE
 VALIDATE $? "Installing dependencies"
 
-cp $PRESENT_DIRECTORY/catalogue.service /etc/systemd/system/catalogue.service
+cp $PRESENT_DIRECTORY/catalogue.service /etc/systemd/system/catalogue.service &>>$LOG_FILE
 VALIDATE $? "Copying the catalogue service"
 
-systemctl daemon-reload
+systemctl daemon-reload &>>$LOG_FILE
 VALIDATE $? "Deamon reloading"
 
-systemctl enable catalogue 
+systemctl enable catalogue  &>>$LOG_FILE
 VALIDATE $? "Enabling the catalogue services"
 
-systemctl start catalogue
+systemctl start catalogue &>>$LOG_FILE
 VALIDATE $? "Startting the catalogue"
 
-cp $PRESENT_DIRECTORY/mongo.repo /etc/yum.repos.d/mongo.repo
+sed 
+
+cp $PRESENT_DIRECTORY/mongo.repo /etc/yum.repos.d/mongo.repo &>>$LOG_FILE
 VALIDATE $? "Copying the monogo repo"
 
-dnf install mongodb-mongosh -y
+dnf install mongodb-mongosh -y &>>$LOG_FILE
 VALIDATE $? "Installing the monogoDB client package"
 
-mongosh --host $DOMAIN_NAME </app/db/master-data.js
+mongosh --host $DOMAIN_NAME </app/db/master-data.js &>>$LOG_FILE
 VALIDATE $? "Loading the monogoDB"
 
 
