@@ -80,10 +80,15 @@ VALIDATE $? "Copying the monogo repo"
 dnf install mongodb-mongosh -y &>>$LOG_FILE
 VALIDATE $? "Installing the monogoDB client package"
 
-mongosh --host $DOMAIN_NAME </app/db/master-data.js &>>$LOG_FILE
-VALIDATE $? "Loading the monogoDB"
+INDEX=$(mongosh mongodb.daws86s.fun --quiet --eval "db.getMongo().getDBNames().indexOf('catalogue')")
+if [ $INDEX -le 0 ]; then
+    mongosh --host $MONGODB_HOST </app/db/master-data.js &>>$LOG_FILE
+else
+    echo -e "Catalogue products already loaded ... $Y SKIPPING $N"
+fi
 
-
+systemctl restart catalogue
+echo -e "Loading products and restarting catalogue ... $G SUCCESS $N"
 
 
 
