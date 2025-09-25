@@ -45,6 +45,7 @@ if [ $? -ne 0]; then
     VALIDATE $? "Creating root user"
 else
     echo "User already existing.... $Y SKIPPING $N"
+fi
 
 mkdir -p /app  &>>$LOG_FILE
 VALIDATE $? "Creating app directory"
