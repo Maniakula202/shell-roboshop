@@ -30,13 +30,13 @@ VALIDATE(){
     fi 
 }
 
-dnf module disable nodejs -y
+dnf module disable nodejs -y  &>>$LOG_FILE
 VALIDATE $? "Disabling nodejs"
 
-dnf module enable nodejs:20 -y
+dnf module enable nodejs:20 -y  &>>$LOG_FILE
 VALIDATE $? "Enabling nodejs20"
 
-dnf install nodejs -y
+dnf install nodejs -y  &>>$LOG_FILE
 VALIDATE $? "Installing nodejs"
 
 
@@ -64,16 +64,16 @@ VALIDATE $? "Unzinpping the code"
 npm install  &>>$LOG_FILE
 VALIDATE $? "Installing dependencies"
 
-cp $PRESENT_DIRECTORY/user.service /etc/systemd/system/user.service
+cp $PRESENT_DIRECTORY/user.service /etc/systemd/system/user.service  &>>$LOG_FILE
 VALIDATE $? "Copying the user services"
 
-systemctl daemon-reload
+systemctl daemon-reload  &>>$LOG_FILE
 VALIDATE $? "Reloading the nodejs"
 
-systemctl enable user 
+systemctl enable user   &>>$LOG_FILE
 VALIDATE $? "Enabling the nodejs"
 
-systemctl start user
+systemctl start user  &>>$LOG_FILE
 VALIDATE $? "Starting the nodejs"
 
 
