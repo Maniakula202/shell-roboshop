@@ -10,7 +10,7 @@ LOGS_FOLDER="/var/log/shell-roboshop"
 SCRIPT_NAME=$( echo $0 | cut -d "."  -f1 )
 LOG_FILE=$LOGS_FOLDER/$SCRIPT_NAME.log
 PRESENT_DIRECTORY=$PWD
-DOMAIN_NAME=catalogue.manidevops.fun
+DOMAIN_NAME=mongo.manidevops.fun
 
 mkdir -p $LOGS_FOLDER
 echo "Script started executed at: $(date)" | tee -a $LOG_FILE
@@ -39,12 +39,12 @@ VALIDATE $? "Enabling nodejs:20"
 dnf install nodejs -y &>>$LOG_FILE
 VALIDATE $? "Installing nodejs"
 
-id roboshop
-if [ $? -ne 0]; then
+id roboshop &>>$LOG_FILE
+if [ $? -ne 0 ]; then
     useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>>$LOG_FILE
     VALIDATE $? "Creating root user"
 else
-    echon -e "User already existing.... $Y SKIPPING $N" | tee -a $LOG_FILE
+    echo -e "User already existing.... $Y SKIPPING $N" | tee -a $LOG_FILE
 fi
 
 mkdir -p /app  &>>$LOG_FILE
@@ -54,7 +54,7 @@ curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue
 VALIDATE $? "Download code to the temp file"
 
 cd /app 
-rm -rf /app/*
+rm -rf /app/*  &>>$LOG_FILE
 unzip /tmp/catalogue.zip &>>$LOG_FILE
 VALIDATE $? "Unzinpping the code"
 
