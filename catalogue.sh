@@ -80,9 +80,9 @@ VALIDATE $? "Copying the monogo repo"
 dnf install mongodb-mongosh -y &>>$LOG_FILE
 VALIDATE $? "Installing the monogoDB client package"
 
-INDEX=$(mongosh mongodb.daws86s.fun --quiet --eval "db.getMongo().getDBNames().indexOf('catalogue')")
+INDEX=$(mongosh mongodb.manidevops.fun --quiet --eval "db.getMongo().getDBNames().indexOf('catalogue')")
 if [ $INDEX -le 0 ]; then
-    mongosh --host $MONGODB_HOST </app/db/master-data.js &>>$LOG_FILE
+    mongosh --host $DOMAIN_NAME </app/db/master-data.js &>>$LOG_FILE
 else
     echo -e "Catalogue products already loaded ... $Y SKIPPING $N"
 fi
