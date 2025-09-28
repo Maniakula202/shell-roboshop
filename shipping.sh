@@ -73,7 +73,4 @@ else
     echo -e "Shipping data is already loaded ... $Y SKIPPING $N"
 fi
 
-systemctl daemon-reload
-echo "$?"
 systemctl restart shipping
-echo "$?"
