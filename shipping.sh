@@ -64,7 +64,7 @@ systemctl enable shipping  &>>$LOG_FILE
 
 dnf install mysql -y  &>>$LOG_FILE
 
-mysql -h $MYSQL_HOST -uroot -pRoboShop@1 -e 'use cities' &>>$LOG_FILE
+mysql -h mysql.manidevops.fun -uroot -pRoboShop@1 -e 'use cities' &>>$LOG_FILE
 echo "loading ceties exit code: $?"
 
 if [ $? -ne 0 ]; then
