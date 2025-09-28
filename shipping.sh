@@ -68,7 +68,7 @@ mysql -h $MYSQL_HOST -uroot -pRoboShop@1 -e 'use cities' &>>$LOG_FILE
 echo "loading ceties exit code: $?"
 
 if [ $? -ne 0 ]; then
-    mysql -h $MYSQL_HOST -uroot -pRoboShop@1 < /app/db/schema.sql &>>$LOG_FILE
+    mysql -h mysql.manidevops.fun -uroot -pRoboShop@1 < /app/db/schema.sql &>>$LOG_FILE
     echo "loading shcema exit code: $?"
     mysql -h $MYSQL_HOST -uroot -pRoboShop@1 < /app/db/app-user.sql  &>>$LOG_FILE
     echo "loading app-user exit code: $?"
